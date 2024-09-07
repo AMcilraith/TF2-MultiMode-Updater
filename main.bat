@@ -16,10 +16,12 @@ echo Select what you'd like to do to play TF2.
 echo.
 echo 1. Start Normally
 echo 2. Update Configs Only
-echo 3. Set Casual Configuration Only
-echo 4. Set Competitive Configuration Only
-echo 5. Start in Casual Configuration
-echo 6. Start in Competitive Configuration
+echo 2. Delete Mod Cache Only
+echo 4. Set Casual Configuration Only
+echo 5. Set Competitive Configuration Only
+echo 6. Start in Casual Configuration
+echo 7. Start in Competitive Configuration
+echo 8. Start in Currrent Configuration
 echo.
 
 :getOptions
@@ -31,7 +33,7 @@ if not defined choices (
     goto getOptions
     )
 
-for %%a in (%choices%) do if %%a EQU 6 set choices=1,2,3,4,5
+for %%a in (%choices%) do if %%a EQU 6 set choices=1,2,3,4,5,6,7,8
 for %%i in (%choices%) do call :option-%%i
 
 echo.
@@ -39,8 +41,6 @@ echo Done!
 exit
 
 :option-1
-del /F /S %tf2-path%\tf\custom\*.cache
-
 "Team Fortress 2.url"
 exit
 
@@ -52,39 +52,42 @@ exit
 
 :option-3
 del "%tf2-path%\tf\custom\*" /s/q
-xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
-start "" "%~f0"
 exit
 
 :option-4
 del "%tf2-path%\tf\custom\*" /s/q
-xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
+xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
 start "" "%~f0"
 exit
 
 :option-5
 del "%tf2-path%\tf\custom\*" /s/q
-xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
-
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
-
-del /F /S %tf2-path%\tf\custom\*.cache
-
-"Team Fortress 2.url"
+xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
+start "" "%~f0"
+exit
 
 :option-6
 del "%tf2-path%\tf\custom\*" /s/q
-xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
-
+xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
-
 del /F /S %tf2-path%\tf\custom\*.cache
+"Team Fortress 2.url"
 
+:option-7
+del "%tf2-path%\tf\custom\*" /s/q
+xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
+del /F /S %tf2-path%\tf\custom\*.cache
+"Team Fortress 2.url"
+exit
+
+:option-8
+del /F /S %tf2-path%\tf\custom\*.cache
 "Team Fortress 2.url"
 exit
