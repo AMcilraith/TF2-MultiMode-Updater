@@ -66,9 +66,15 @@ exit
 
 :option-5
 del "%tf2-path%\tf\custom\*" /s/q
-xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\overrides\"
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
+
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
+
+cd "%tf2-path%\tf\custom"
+del /F /S *.cache
+"Team Fortress 2.url"
 
 :option-6
 del "%tf2-path%\tf\custom\*" /s/q
