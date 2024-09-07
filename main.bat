@@ -1,4 +1,4 @@
-@echo on
+@echo off
 Set "SExe="
 Set "SPth="
 For /F "Tokens=1,2*" %%A In ('Reg Query HKCU\SOFTWARE\Valve\Steam') Do (
@@ -11,6 +11,8 @@ If Defined SPth set "steam-dir=%SPth%"
 set "tf2-path=%steam-dir%\steamapps\common\Team Fortress 2"
 Echo=The full path to the TF2 Folder is "%tf2-path%"
 
+:startOptions
+cls
 echo.
 echo Select what you'd like to do to play TF2.
 echo.
@@ -23,18 +25,18 @@ echo 6. Start in Casual Configuration
 echo 7. Start in Competitive Configuration
 echo 8. Start in Currrent Configuration
 echo.
+goto getOptions
 
 :getOptions
-set "choices="
-set /p "choices=Type your choices without spacing (e.g. 1,2,3): "
+set "choices=1,2,3,4,5,6,7,8"
+set /p "choices=Type your choice without spacing (e.g. 1,2,3): "
 
 if not defined choices ( 
     echo Please enter a valid option
     goto getOptions
     )
-
-for %%a in (%choices%) do if %%a EQU 1 set choices=1,2,3,4,5,6,7,8
-for %%a in (%choices%) do call :option-%%i
+else
+for %%i in (%choices%) do call :option-%%i
 
 echo.
 echo Done!
@@ -45,49 +47,52 @@ exit
 exit
 
 :option-2
+cls
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
-start "" "%~f0"
-exit
+call :startOptions
 
 :option-3
+cls
 del "%tf2-path%\tf\custom\*" /s/q
-exit
+call :startOptions
 
 :option-4
+cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
-start "" "%~f0"
-exit
+call :startOptions
 
 :option-5
+cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
-start "" "%~f0"
-exit
+call :startOptions
 
 :option-6
+cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
-del /F /S %tf2-path%\tf\custom\*.cache
 "Team Fortress 2.url"
+exit
 
 :option-7
+cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
-del /F /S %tf2-path%\tf\custom\*.cache
 "Team Fortress 2.url"
 exit
 
 :option-8
+cls
 del /F /S %tf2-path%\tf\custom\*.cache
 "Team Fortress 2.url"
 exit
