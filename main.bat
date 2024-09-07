@@ -39,8 +39,8 @@ echo Done!
 exit
 
 :option-1
-cd "%tf2-path%\tf\custom"
-del /F /S *.cache
+del /F /S %tf2-path%\tf\custom\*.cache
+
 "Team Fortress 2.url"
 exit
 
@@ -72,8 +72,8 @@ xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
 
-cd "%tf2-path%\tf\custom"
-del /F /S *.cache
+del /F /S %tf2-path%\tf\custom\*.cache
+
 "Team Fortress 2.url"
 
 :option-6
@@ -84,7 +84,7 @@ xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
 
-cd "%tf2-path%\tf\custom"
-del /F /S *.cache
+del /F /S %tf2-path%\tf\custom\*.cache
+
 "Team Fortress 2.url"
 exit
