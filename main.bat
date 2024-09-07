@@ -1,4 +1,4 @@
-@echo off
+@echo on
 Set "SExe="
 Set "SPth="
 For /F "Tokens=1,2*" %%A In ('Reg Query HKCU\SOFTWARE\Valve\Steam') Do (
@@ -33,8 +33,8 @@ if not defined choices (
     goto getOptions
     )
 
-for %%a in (%choices%) do if %%a EQU 6 set choices=1,2,3,4,5,6,7,8
-for %%i in (%choices%) do call :option-%%i
+for %%a in (%choices%) do if %%a EQU 1 set choices=1,2,3,4,5,6,7,8
+for %%a in (%choices%) do call :option-%%i
 
 echo.
 echo Done!
