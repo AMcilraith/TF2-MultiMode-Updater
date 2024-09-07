@@ -71,6 +71,7 @@ exit
 
 :option-3
 del "%tf2-path%\tf\custom\*" /s/q
+xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\overrides\"
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
 start "" "%~f0"
