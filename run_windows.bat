@@ -96,6 +96,6 @@ exit
 :: Option 8 - Start in Current Configuration
 :option-8
 cls
-del /F /S %tf2-path%\tf\custom\*.cache
+del /F /S "%tf2-path%\tf\custom\*.cache"
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
