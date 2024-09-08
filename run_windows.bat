@@ -12,7 +12,7 @@ echo Select what you'd like to do to play TF2.
 echo.
 echo 1. Start Normally
 echo 2. Update Configs Only
-echo 2. Delete Mod Cache Only
+echo 3. Delete Mod Cache Only
 echo 4. Set Casual Configuration Only
 echo 5. Set Competitive Configuration Only
 echo 6. Start in Casual Configuration
