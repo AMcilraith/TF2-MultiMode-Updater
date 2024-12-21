@@ -52,7 +52,7 @@ call :startOptions
 :: Option 2 - Delete Mod Cache Only
 :option-3
 cls
-del "%tf2-path%\tf\custom\*" /s/q
+del /F /S "%tf2-path%\tf\custom\*.cache"
 call :startOptions
 
 :: Option 4 - Set Casual Configuration Only
