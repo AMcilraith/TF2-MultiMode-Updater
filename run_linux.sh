@@ -63,7 +63,7 @@ option2() {
 # Option 3 - Delete Mod Cache Only
 option3() {
     clear
-    rm -rf "$tf2_path/custom/*"
+    find "$tf2_path/custom" -name "*.cache" -delete
     startOptions
 }
 
