@@ -29,7 +29,7 @@ getOptions() {
         echo "Please enter a valid option"
         getOptions
     else
-        for choice in $(echo $choices | tr "," "\n"); do
+        for choice in $(echo "$choices" | tr "," "\n"); do
             case $choice in
                 1) option1 ;;
                 2) option2 ;;
@@ -39,7 +39,7 @@ getOptions() {
                 6) option6 ;;
                 7) option7 ;;
                 8) option8 ;;
-                *) echo "Invalid option: $choice";;
+                *) echo "Invalid option: $choice" ;;
             esac
         done
     fi
@@ -63,32 +63,37 @@ option2() {
 # Option 3 - Delete Mod Cache Only
 option3() {
     clear
-    find "$tf2_path/custom" -name "*.cache" -delete
+    find "$tf2_path/custom" -name "*.vpk.sound.cache" -delete
     startOptions
 }
 
 # Option 4 - Set Casual Configuration Only
 option4() {
     clear
-    rm -rf "$tf2_path/custom/*"
+    # Remove quotes from the wildcard so it expands properly
+    rm -rf "$tf2_path/custom"/*
     cp -r custom_casual/* "$tf2_path/custom/"
     cp autoexec_casual/autoexec.cfg "$tf2_path/cfg/"
+    cp -r cfg/* "$tf2_path/cfg/"
+    cp -r cfg/* "$tf2_path/cfg/overrides/"
     startOptions
 }
 
 # Option 5 - Set Competitive Configuration Only
 option5() {
     clear
-    rm -rf "$tf2_path/custom/*"
+    rm -rf "$tf2_path/custom"/*
     cp -r custom_comp/* "$tf2_path/custom/"
     cp autoexec_comp/autoexec.cfg "$tf2_path/cfg/"
+    cp -r cfg/* "$tf2_path/cfg/"
+    cp -r cfg/* "$tf2_path/cfg/overrides/"
     startOptions
 }
 
 # Option 6 - Start in Casual Configuration
 option6() {
     clear
-    rm -rf "$tf2_path/custom/*"
+    rm -rf "$tf2_path/custom"/*
     cp -r custom_casual/* "$tf2_path/custom/"
     cp autoexec_casual/autoexec.cfg "$tf2_path/cfg/"
     cp -r cfg/* "$tf2_path/cfg/"
@@ -99,7 +104,7 @@ option6() {
 # Option 7 - Start in Competitive Configuration
 option7() {
     clear
-    rm -rf "$tf2_path/custom/*"
+    rm -rf "$tf2_path/custom"/*
     cp -r custom_comp/* "$tf2_path/custom/"
     cp autoexec_comp/autoexec.cfg "$tf2_path/cfg/"
     cp -r cfg/* "$tf2_path/cfg/"
@@ -110,9 +115,12 @@ option7() {
 # Option 8 - Start in Current Configuration
 option8() {
     clear
-    find "$tf2_path/custom" -name "*.cache" -delete
+    find "$tf2_path/custom" -name "*.vpk.sound.cache" -delete
     "$steam_dir/steam.sh" steam://rungameid/440
 }
 
-# Exit the Script
+# Call the start options menu when the script runs
+startOptions
+
 exit
+
