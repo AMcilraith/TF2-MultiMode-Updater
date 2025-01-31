@@ -52,7 +52,7 @@ call :startOptions
 :: Option 2 - Delete Mod Cache Only
 :option-3
 cls
-del /F /S "%tf2-path%\tf\custom\*.cache"
+del /F /S "%tf2-path%\tf\custom\*.vpk.sound.cache"
 call :startOptions
 
 :: Option 4 - Set Casual Configuration Only
@@ -61,6 +61,8 @@ cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "cfg\"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
 call :startOptions
 
 :: Option 5 - Set Competitive Configuration Only
@@ -69,6 +71,8 @@ cls
 del "%tf2-path%\tf\custom\*" /s/q
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "cfg\"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\*"
+xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\*"
 call :startOptions
 
 
@@ -96,6 +100,6 @@ exit
 :: Option 8 - Start in Current Configuration
 :option-8
 cls
-del /F /S "%tf2-path%\tf\custom\*.cache"
+del /F /S "%tf2-path%\tf\custom\*.vpk.sound.cache"
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
