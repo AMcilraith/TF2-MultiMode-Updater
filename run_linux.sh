@@ -18,7 +18,7 @@ startOptions() {
     echo "3. Delete Mod Cache Only"
     echo "4. Set Casual Configuration Only"
     echo "5. Set Competitive Configuration Only"
-    echo "6. Remove Mods Only, Keep Configuration"
+    echo "6. Remove Mods Only, Keep Existing Configuration"
     echo "7. Start in Casual Configuration"
     echo "8. Start in Competitive Configuration"
     echo "9. Remove Mods and Start in Current Configuration"
