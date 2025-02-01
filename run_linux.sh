@@ -3,6 +3,7 @@
 # Set Directories
 steam_dir="$HOME/.steam/steam"
 tf2_path="$steam_dir/steamapps/common/Team Fortress 2/tf"
+cd "$(dirname "$0")" || { echo "Failed to change directory"; exit 1; }
 
 # Start Options Menu
 startOptions() {
