@@ -1,9 +1,11 @@
 #!/bin/bash
 
+# Change to the directory where the script resides
+cd "$(dirname "$0")" || { echo "Failed to change directory"; exit 1; }
+
 # Set Directories
 steam_dir="$HOME/.steam/steam"
 tf2_path="$steam_dir/steamapps/common/Team Fortress 2/tf"
-cd "$(dirname "$0")" || { echo "Failed to change directory"; exit 1; }
 
 # Start Options Menu
 startOptions() {
@@ -16,9 +18,11 @@ startOptions() {
     echo "3. Delete Mod Cache Only"
     echo "4. Set Casual Configuration Only"
     echo "5. Set Competitive Configuration Only"
-    echo "6. Start in Casual Configuration"
-    echo "7. Start in Competitive Configuration"
-    echo "8. Start in Current Configuration"
+    echo "6. Set No Mods Configuration Only"
+    echo "7. Start in Casual Configuration"
+    echo "8. Start in Competitive Configuration"
+    echo "9. Start in No Mods Configuration"
+    echo "10. Start in Current Configuration"
     echo
     getOptions
 }
@@ -40,6 +44,8 @@ getOptions() {
                 6) option6 ;;
                 7) option7 ;;
                 8) option8 ;;
+                9) option9 ;;
+                10) option10 ;;
                 *) echo "Invalid option: $choice" ;;
             esac
         done
@@ -71,7 +77,7 @@ option3() {
 # Option 4 - Set Casual Configuration Only
 option4() {
     clear
-    # Remove quotes from the wildcard so it expands properly
+    # Remove existing custom files
     rm -rf "$tf2_path/custom"/*
     cp -r custom_casual/* "$tf2_path/custom/"
     cp autoexec_casual/autoexec.cfg "$tf2_path/cfg/"
@@ -91,8 +97,16 @@ option5() {
     startOptions
 }
 
-# Option 6 - Start in Casual Configuration
+# Option 6 - Remove Mods Only
 option6() {
+    clear
+    rm -rf "$tf2_path/custom"/*
+    echo "Mods have been removed."
+    startOptions
+}
+
+# Option 7 - Start in Casual Configuration
+option7() {
     clear
     rm -rf "$tf2_path/custom"/*
     cp -r custom_casual/* "$tf2_path/custom/"
@@ -102,8 +116,8 @@ option6() {
     "$steam_dir/steam.sh" steam://rungameid/440
 }
 
-# Option 7 - Start in Competitive Configuration
-option7() {
+# Option 8 - Start in Competitive Configuration
+option8() {
     clear
     rm -rf "$tf2_path/custom"/*
     cp -r custom_comp/* "$tf2_path/custom/"
@@ -113,8 +127,15 @@ option7() {
     "$steam_dir/steam.sh" steam://rungameid/440
 }
 
-# Option 8 - Start in Current Configuration
-option8() {
+# Option 9 - Remove Mods and Play Without
+option9() {
+    clear
+    rm -rf "$tf2_path/custom"/*
+    "$steam_dir/steam.sh" steam://rungameid/440
+}
+
+# Option 10 - Start in Current Configuration
+option10() {
     clear
     find "$tf2_path/custom" -name "*.vpk.sound.cache" -delete
     "$steam_dir/steam.sh" steam://rungameid/440
