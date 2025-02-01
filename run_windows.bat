@@ -15,10 +15,10 @@ echo 2. Update Configs Only
 echo 3. Delete Mod Cache Only
 echo 4. Set Casual Configuration Only
 echo 5. Set Competitive Configuration Only
-echo 6. Set No Mods Configuration Only
+echo 6. Remove Mods Only, Keep Existing Configuration
 echo 7. Start in Casual Configuration
 echo 8. Start in Competitive Configuration
-echo 9. Start in No Mods Configuration
+echo 9. Remove Mods and Start in Current Configuration
 echo 10. Start in Current Configuration
 echo.
 goto getOptions
