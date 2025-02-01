@@ -21,7 +21,7 @@ startOptions() {
     echo "6. Remove Mods Only, Keep Configuration"
     echo "7. Start in Casual Configuration"
     echo "8. Start in Competitive Configuration"
-    echo "9. Remove Mods and Play in Current Configuration"
+    echo "9. Remove Mods and Start in Current Configuration"
     echo "10. Start in Current Configuration"
     echo
     getOptions
