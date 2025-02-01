@@ -18,10 +18,10 @@ startOptions() {
     echo "3. Delete Mod Cache Only"
     echo "4. Set Casual Configuration Only"
     echo "5. Set Competitive Configuration Only"
-    echo "6. Set No Mods Configuration Only"
+    echo "6. Remove Mods Only, Keep Configuration"
     echo "7. Start in Casual Configuration"
     echo "8. Start in Competitive Configuration"
-    echo "9. Start in No Mods Configuration"
+    echo "9. Remove Mods and Play in Current Configuration"
     echo "10. Start in Current Configuration"
     echo
     getOptions
@@ -101,7 +101,6 @@ option5() {
 option6() {
     clear
     rm -rf "$tf2_path/custom"/*
-    echo "Mods have been removed."
     startOptions
 }
 
@@ -145,4 +144,3 @@ option10() {
 startOptions
 
 exit
-
