@@ -1,7 +1,7 @@
 @echo off
 
 :: Set Directories
-set "steam-dir=%HOMEDRIVE%\Program Files (x86)\steam"
+set "steam-dir=%HOMEDRIVE%\Program Files (x86)\Steam"
 set "tf2-path=%steam-dir%\steamapps\common\Team Fortress 2"
 
 :: Start Options Menu
@@ -25,19 +25,21 @@ goto getOptions
 
 :: Get User Options
 :getOptions
-set "choices=1,2,3,4,5,6,7,8,9,10"
-set /p "choices=Type your choice without spacing (e.g. 1,2,3): "
+set /p "choice=Type your choice (1-10): "
 
-if not defined choices (
-    echo Please enter a valid option
-    goto getOptions
-) else (
-    for %%i in (%choices%) do call :option-%%i
-)
+if "%choice%"=="1" goto option-1
+if "%choice%"=="2" goto option-2
+if "%choice%"=="3" goto option-3
+if "%choice%"=="4" goto option-4
+if "%choice%"=="5" goto option-5
+if "%choice%"=="6" goto option-6
+if "%choice%"=="7" goto option-7
+if "%choice%"=="8" goto option-8
+if "%choice%"=="9" goto option-9
+if "%choice%"=="10" goto option-10
 
-echo.
-echo Done!
-exit
+echo Please enter a valid option
+goto getOptions
 
 :: Option 1 - Start Normally
 :option-1
@@ -54,13 +56,13 @@ call :startOptions
 :: Option 3 - Delete Mod Cache Only
 :option-3
 cls
-del /F /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
 call :startOptions
 
 :: Option 4 - Set Casual Configuration Only
 :option-4
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -70,7 +72,7 @@ call :startOptions
 :: Option 5 - Set Competitive Configuration Only
 :option-5
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -80,7 +82,7 @@ call :startOptions
 :: Option 6 - Set No Mods Configuration Only
 :option-6
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 echo Mods have been removed.
 pause
 call :startOptions
@@ -88,7 +90,7 @@ call :startOptions
 :: Option 7 - Start in Casual Configuration
 :option-7
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -99,7 +101,7 @@ exit
 :: Option 8 - Start in Competitive Configuration
 :option-8
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -110,14 +112,13 @@ exit
 :: Option 9 - Start in No Mods Configuration
 :option-9
 cls
-del /F /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
 
 :: Option 10 - Start in Current Configuration
 :option-10
 cls
-del /F /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
-
