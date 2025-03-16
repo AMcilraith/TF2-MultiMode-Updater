@@ -23,6 +23,7 @@ startOptions() {
     echo "8. Start in Competitive Configuration"
     echo "9. Remove Mods and Start in Current Configuration"
     echo "10. Start in Current Configuration"
+    echo "11. Switch HUD"
     echo
     getOptions
 }
@@ -46,6 +47,7 @@ getOptions() {
                 8) option8 ;;
                 9) option9 ;;
                 10) option10 ;;
+                11) option11 ;;
                 *) echo "Invalid option: $choice" ;;
             esac
         done
@@ -138,6 +140,17 @@ option10() {
     clear
     find "$tf2_path/custom" -name "*.vpk.sound.cache" -delete
     "$steam_dir/steam.sh" steam://rungameid/440
+}
+
+# Option 11 - Switch HUD
+option11() {
+    clear
+    echo "Available HUDs:"
+    ls -1 custom_hud
+    read -p "Type the name of the HUD you want to use: " hud_choice
+    rm -rf "$tf2_path/custom/hud"
+    cp -r "custom_hud/$hud_choice/*" "$tf2_path/custom/hud"
+    startOptions
 }
 
 # Call the start options menu when the script runs

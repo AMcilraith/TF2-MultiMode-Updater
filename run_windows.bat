@@ -20,12 +20,13 @@ echo 7. Start in Casual Configuration
 echo 8. Start in Competitive Configuration
 echo 9. Remove Mods and Start in Current Configuration
 echo 10. Start in Current Configuration
+echo 11. Switch HUD
 echo.
 goto getOptions
 
 :: Get User Options
 :getOptions
-set /p "choice=Type your choice (1-10): "
+set /p "choice=Type your choice (1-11): "
 
 if "%choice%"=="1" goto option-1
 if "%choice%"=="2" goto option-2
@@ -37,6 +38,7 @@ if "%choice%"=="7" goto option-7
 if "%choice%"=="8" goto option-8
 if "%choice%"=="9" goto option-9
 if "%choice%"=="10" goto option-10
+if "%choice%"=="11" goto option-11
 
 echo Please enter a valid option
 goto getOptions
@@ -56,13 +58,13 @@ call :startOptions
 :: Option 3 - Delete Mod Cache Only
 :option-3
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache"
 call :startOptions
 
 :: Option 4 - Set Casual Configuration Only
 :option-4
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -72,7 +74,7 @@ call :startOptions
 :: Option 5 - Set Competitive Configuration Only
 :option-5
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -82,7 +84,7 @@ call :startOptions
 :: Option 6 - Set No Mods Configuration Only
 :option-6
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 echo Mods have been removed.
 pause
 call :startOptions
@@ -90,7 +92,7 @@ call :startOptions
 :: Option 7 - Start in Casual Configuration
 :option-7
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -101,7 +103,7 @@ exit
 :: Option 8 - Start in Competitive Configuration
 :option-8
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
 xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
 xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
@@ -112,13 +114,23 @@ exit
 :: Option 9 - Start in No Mods Configuration
 :option-9
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*"
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
 
 :: Option 10 - Start in Current Configuration
 :option-10
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache" >nul 2>&1
+del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache"
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
+
+:: Option 11 - Switch HUD
+:option-11
+cls
+echo Available HUDs:
+dir /b custom_hud
+set /p "hud_choice=Type the name of the HUD you want to use: "
+del /F /Q /S "%tf2-path%\tf\custom\hud"
+xcopy /e /k /h /i /y "custom_hud\%hud_choice%\*" "%tf2-path%\tf\custom\hud"
+call :startOptions
