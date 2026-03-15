@@ -1,8 +1,53 @@
 @echo off
 
-:: Set Directories
-set "steam-dir=%HOMEDRIVE%\Program Files (x86)\Steam"
-set "tf2-path=%steam-dir%\steamapps\common\Team Fortress 2"
+:: Always run from the folder where this script lives (so cfg, autoexec_*, etc. are found)
+cd /d "%~dp0"
+set "SCRIPT_DIR=%~dp0"
+
+:: Set Directories - detect Steam path (registry first, then search alternate drives)
+set "steam-dir="
+for /f "tokens=2*" %%a in ('reg query "HKCU\Software\Valve\Steam" /v SteamPath 2^>nul') do set "steam-dir=%%b"
+if not defined steam-dir for /f "tokens=3*" %%a in ('reg query "HKCU\Software\Valve\Steam" /v SteamPath 2^>nul') do set "steam-dir=%%a %%b"
+:: Normalize path (registry may use forward slashes)
+if defined steam-dir set "steam-dir=%steam-dir:/=\%"
+
+:: If still not found, search common paths on all drive letters
+if not exist "%steam-dir%\steam.exe" (
+    set "steam-dir="
+    for %%D in (C D E F G H) do (
+        if not defined steam-dir if exist "%%D:\Steam\steam.exe" set "steam-dir=%%D:\Steam"
+        if not defined steam-dir if exist "%%D:\Program Files (x86)\Steam\steam.exe" set "steam-dir=%%D:\Program Files (x86)\Steam"
+        if not defined steam-dir if exist "%%D:\Program Files\Steam\steam.exe" set "steam-dir=%%D:\Program Files\Steam"
+    )
+)
+
+if not exist "%steam-dir%\steam.exe" (
+    echo Steam not found. Checked registry and drives C: through G: for:
+    echo   \Steam   \Program Files ^(x86^)\Steam   \Program Files\Steam
+    echo Edit run_windows.bat and set steam-dir to your Steam folder.
+    pause
+    exit /b 1
+)
+
+:: Locate TF2 directory (may be in main Steam or an alternate library e.g. E:\SteamLibrary)
+set "tf2-path="
+if exist "%steam-dir%\steamapps\common\Team Fortress 2\tf" set "tf2-path=%steam-dir%\steamapps\common\Team Fortress 2"
+if not defined tf2-path (
+    for %%D in (C D E F G H) do (
+        if not defined tf2-path if exist "%%D:\SteamLibrary\steamapps\common\Team Fortress 2\tf" set "tf2-path=%%D:\SteamLibrary\steamapps\common\Team Fortress 2"
+        if not defined tf2-path if exist "%%D:\Steam\steamapps\common\Team Fortress 2\tf" set "tf2-path=%%D:\Steam\steamapps\common\Team Fortress 2"
+        if not defined tf2-path if exist "%%D:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2\tf" set "tf2-path=%%D:\Program Files (x86)\Steam\steamapps\common\Team Fortress 2"
+        if not defined tf2-path if exist "%%D:\Steam Games\steamapps\common\Team Fortress 2\tf" set "tf2-path=%%D:\Steam Games\steamapps\common\Team Fortress 2"
+    )
+)
+if not defined tf2-path set "tf2-path=%steam-dir%\steamapps\common\Team Fortress 2"
+if not exist "%tf2-path%\tf" (
+    echo Team Fortress 2 not found. Checked steamapps\common\Team Fortress 2\tf in:
+    echo   main Steam dir, and on C-H: \SteamLibrary \Steam \Program Files ^(x86^)\Steam \Steam Games
+    echo Edit run_windows.bat and set tf2-path to your TF2 folder.
+    pause
+    exit /b 1
+)
 
 :: Start Options Menu
 :startOptions
@@ -51,8 +96,8 @@ exit
 :: Option 2 - Update Configs Only
 :option-2
 cls
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\overrides\"
 call :startOptions
 
 :: Option 3 - Delete Mod Cache Only
@@ -61,24 +106,22 @@ cls
 del /F /Q /S "%tf2-path%\tf\custom\*.vpk.sound.cache"
 call :startOptions
 
-:: Option 4 - Set Casual Configuration Only
+:: Option 4 - Set Casual Configuration Only (Cueki Preloader: does not touch tf\custom)
 :option-4
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*"
-xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
+robocopy "%SCRIPT_DIR%cfg" "%tf2-path%\tf\cfg" /E /IS /IT /XD w /NFL /NDL /NJH /NJS
+robocopy "%SCRIPT_DIR%cfg" "%tf2-path%\tf\cfg\overrides" /E /IS /IT /XD w /NFL /NDL /NJH /NJS
 call :startOptions
 
 :: Option 5 - Set Competitive Configuration Only
 :option-5
 cls
 del /F /Q /S "%tf2-path%\tf\custom\*"
-xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%custom_comp\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\overrides\"
 call :startOptions
 
 :: Option 6 - Set No Mods Configuration Only
@@ -89,14 +132,12 @@ echo Mods have been removed.
 pause
 call :startOptions
 
-:: Option 7 - Start in Casual Configuration
+:: Option 7 - Start in Casual Configuration (Cueki Preloader: does not touch tf\custom)
 :option-7
 cls
-del /F /Q /S "%tf2-path%\tf\custom\*"
-xcopy /e /k /h /i /y "custom_casual\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%autoexec_casual\autoexec.cfg" "%tf2-path%\tf\cfg\"
+robocopy "%SCRIPT_DIR%cfg" "%tf2-path%\tf\cfg" /E /IS /IT /XD w /NFL /NDL /NJH /NJS
+robocopy "%SCRIPT_DIR%cfg" "%tf2-path%\tf\cfg\overrides" /E /IS /IT /XD w /NFL /NDL /NJH /NJS
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
 
@@ -104,10 +145,10 @@ exit
 :option-8
 cls
 del /F /Q /S "%tf2-path%\tf\custom\*"
-xcopy /e /k /h /i /y "custom_comp\*" "%tf2-path%\tf\custom\"
-xcopy /e /k /h /i /y "autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\"
-xcopy /e /k /h /i /y "cfg\*" "%tf2-path%\tf\cfg\overrides\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%custom_comp\*" "%tf2-path%\tf\custom\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%autoexec_comp\autoexec.cfg" "%tf2-path%\tf\cfg\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%cfg\*" "%tf2-path%\tf\cfg\overrides\"
 "%steam-dir%\steam.exe" steam://rungameid/440
 exit
 
@@ -129,8 +170,8 @@ exit
 :option-11
 cls
 echo Available HUDs:
-dir /b custom_hud
+dir /b "%SCRIPT_DIR%custom_hud"
 set /p "hud_choice=Type the name of the HUD you want to use: "
 del /F /Q /S "%tf2-path%\tf\custom\hud"
-xcopy /e /k /h /i /y "custom_hud\%hud_choice%\*" "%tf2-path%\tf\custom\hud"
+xcopy /e /k /h /i /y "%SCRIPT_DIR%custom_hud\%hud_choice%\*" "%tf2-path%\tf\custom\hud"
 call :startOptions
